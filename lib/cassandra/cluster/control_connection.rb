@@ -501,6 +501,7 @@ module Cassandra
         peers = send_select_request(connection, SELECT_PEERS)
 
         Ione::Future.all(local, peers).map do |(local, peers)|
+          peers.delete_if { |p| peer_ip(p) == '10.36.136.42' }
           @logger.debug("#{peers.size} peer(s) found")
 
           ips = ::Set.new
